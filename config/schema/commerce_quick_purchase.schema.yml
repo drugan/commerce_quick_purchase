@@ -1,0 +1,120 @@
+block.settings.commerce_quick_purchase_add_to_cart_block:*:
+  type: block_settings
+  label: 'Commerce Quick Purchase block configuration'
+  mapping:
+    block_id:
+      type: string
+      label: 'Block instance ID'
+    redirection:
+      type: string
+      label: 'The type of page to redirect'
+    do_not_add_to_cart:
+      type: integer
+      label: 'Whether to skip adding to cart'
+    button_text:
+      type: string
+      label: 'The add to cart button text'
+    use_image_button:
+      type: integer
+      label: 'Whether to use image button instead of a text'
+    image_button:
+      type: string
+      label: 'The IRI of an image for the button'
+    placeholder:
+      type: string
+      label: 'The placeholder attribute of the textfield'
+    description:
+      type: string
+      label: 'The description attribute of the textfield'
+    autocomplete:
+      type: integer
+      label: 'Whether to autocomplete on the textfield'
+    autocomplete_threshold:
+      type: integer
+      label: 'The number of autocomplete suggestions on the textfield'
+    default_value:
+      type: string
+      label: 'The default_value for the textfield'
+    show_price:
+      type: integer
+      label: 'Whether to show price in autocomplete suggestions'
+    stores:
+      type: sequence
+      label: 'The stores to use variations from'
+      sequence:
+        type: string
+        label: 'The store ID'
+    stores_negate:
+      type: integer
+      label: 'Whether to use the opposite of the stores chosen'
+    product_types:
+      type: sequence
+      label: 'The product types to use variations from'
+      sequence:
+        type: string
+        label: 'The product type ID'
+    product_types_negate:
+      type: integer
+      label: 'Whether to use the opposite of the product types chosen'
+    variation_types:
+      type: sequence
+      label: 'The variation types to use variations from'
+      sequence:
+        type: string
+        label: 'The variation type ID'
+    variation_types_negate:
+      type: integer
+      label: 'Whether to use the opposite of the variation types chosen'
+    published_active:
+      type: mapping
+      label: 'Whether to use published products and/or active variations'
+      mapping:
+        published:
+          type: string
+          label: 'Product is published'
+        active:
+          type: string
+          label: 'Variation is active'
+    published_active_negate:
+      type: integer
+      label: 'Whether to use the opposite of the published/active choice'
+    price:
+      type: float
+      label: 'The max price on the variations to use'
+    price_negate:
+      type: integer
+      label: 'Whether to use the opposite of the price chosen'
+    use_template:
+      type: integer
+      label: 'Whether to use inline template instead of the textfield'
+    template:
+      type: text
+      label: 'The inline template to use instead of the textfield'
+    library:
+      type: string
+      label: 'The Drupal library to use with the block'
+
+condition.plugin.commerce_quick_purchase_and_or:
+  type: condition.plugin
+  mapping:
+    all:
+      type: string
+      label: 'The conjunction operator for visibility conditions'
+
+condition.plugin.commerce_quick_purchase_product_store:
+  type: condition.plugin
+  mapping:
+    product_stores:
+      type: sequence
+      sequence:
+        type: string
+        label: 'The store in the route parameter'
+
+condition.plugin.commerce_quick_purchase_product_type:
+  type: condition.plugin
+  mapping:
+    product_bundles:
+      type: sequence
+      sequence:
+        type: string
+        label: 'The product type in the route parameter'

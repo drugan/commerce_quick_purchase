@@ -1,0 +1,15 @@
+/*
+The form variation textfield and button
+*/
+.commerce-quick-purchase__textfield {
+  max-width: none;
+  width: 100%;
+}
+.commerce-quick-purchase__textfield:focus {
+  width: auto;
+  z-index: -999;
+}
+
+.commerce-quick-purchase__button {
+  min-width: 50px;
+}

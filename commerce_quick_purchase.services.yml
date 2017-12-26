@@ -1,0 +1,19 @@
+services:
+  commerce_quick_purchase.commerce_product_route_context:
+    class: Drupal\commerce_quick_purchase\ContextProvider\QuickPurchaseRouteContext
+    arguments: ['@current_route_match']
+    tags:
+      - { name: 'context_provider' }
+
+  commerce_quick_purchase.cart_manager:
+    class: Drupal\commerce_quick_purchase\QuickPurchaseCartManager
+    arguments: ['@entity_type.manager', '@commerce_quick_purchase.order_item_matcher', '@event_dispatcher', '@commerce.availability_manager']
+
+  commerce_quick_purchase.order_item_matcher:
+    class: Drupal\commerce_quick_purchase\QuickPurchaseOrderItemMatcher
+    arguments: ['@event_dispatcher']
+
+# Use this if the same in CommerceQuickPurchaseServiceProvider does not work.
+#  commerce_product.variation_field_renderer:
+#    class: Drupal\commerce_quick_purchase\QuickPurchaseProductVariationFieldRenderer
+#    arguments: ['@entity_type.manager', '@entity_field.manager']

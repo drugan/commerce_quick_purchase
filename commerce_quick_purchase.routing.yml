@@ -1,0 +1,6 @@
+commerce_quick_purchase.sku_autocomplete:
+  path: '/commerce-quick-purchase-sku/autocomplete'
+  defaults:
+    _controller: '\Drupal\commerce_quick_purchase\Controller\QuickPurchaseAutocompleteController::autocomplete'
+  requirements:
+    _permission: 'access cart'

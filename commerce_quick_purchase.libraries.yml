@@ -1,0 +1,16 @@
+form:
+  version: VERSION
+  css:
+    theme:
+      css/commerce-quick-purchase.form.css: {}
+
+template-example-1:
+  version: VERSION
+  css:
+    theme:
+      css/commerce-quick-purchase.template-example-1.css: {}
+
+block.settings:
+  version: VERSION
+  js:
+    js/commerce-quick-purchase-block.js: {}

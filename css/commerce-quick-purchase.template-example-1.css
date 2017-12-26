@@ -1,0 +1,32 @@
+/*
+The pane build with inline template
+.block-commerce-quick-purchase-add-to-cart-blocknew-commerce-quick-purchase-add-to-cart-block {
+*/
+.commerce-quick-purchase-form-block-form {
+  border: 1px solid grey;
+  background: #e8f6fe;
+  width: 30%;
+  display: inline-table;
+  vertical-align: bottom;
+  margin: 5px;
+  text-align: center;
+}
+
+.template-example-1__title {
+  height: 100px;
+  background: rgba(179,225,251,0.3);
+  text-align: center;
+  font-size: 10px;
+  padding: 10px 10px 15px;
+  font-variant: small-caps;
+  font-weight: bolder;
+  font-size: xx-large;
+}
+
+.commerce-quick-purchase__button.button {
+  border-radius: initial;
+  background: #20e4ec;
+  width: 80%;
+  background-image: none;
+  text-transform: uppercase;
+}

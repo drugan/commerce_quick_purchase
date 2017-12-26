@@ -1,0 +1,28 @@
+{
+  "name": "drupal/commerce_quick_purchase",
+  "type": "drupal-module",
+  "description": "Provides a block with a textfield and a button allowing quickly to add any product to cart.",
+  "authors": [
+    {
+      "name": "Anne-Sophie Picot (asplamagnifique)",
+      "homepage": "https://www.drupal.org/u/asplamagnifique",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Vladimir Proshin (drugan)",
+      "homepage": "https://www.drupal.org/u/drugan",
+      "role": "Maintainer"
+    }
+  ],
+  "keywords": ["Drupal", "Drupal Commerce"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/commerce_quick_purchase",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://github.com/drugan/commerce_quick_purchase/issues",
+    "source": "https://github.com/drugan/commerce_quick_purchase"
+  },
+  "require": {
+        "drupal/readmehelp": "dev-1.x"
+  }
+}

@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Contains commerce_quick_purchase.module.
+ */
+
+use Drupal\commerce_quick_purchase\QuickPurchaseBlockForm;
+use Drupal\commerce_quick_purchase\QuickPurchaseBlockAccessControlHandler;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function commerce_quick_purchase_entity_type_alter(array &$entity_types) {
+  $entity_types['block']->setFormClass('default', QuickPurchaseBlockForm::class);
+  $entity_types['block']->setAccessClass(QuickPurchaseBlockAccessControlHandler::class);
+}
