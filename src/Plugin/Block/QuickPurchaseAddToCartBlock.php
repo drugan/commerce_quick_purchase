@@ -151,6 +151,7 @@ class QuickPurchaseAddToCartBlock extends BlockBase implements ContainerFactoryP
 HTML;
 
     return [
+      'block_id' => '',
       'redirection' => 'no',
       'do_not_add_to_cart' => 0,
       'button_text' => $this->t('Add to cart'),

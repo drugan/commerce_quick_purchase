@@ -91,7 +91,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
         '#prefix' => "<div id=\"{$args['id']}-field\" class=\"commerce-quick-purchase__field\">",
         '#suffix' => '</div>',
       ];
-      if ($args['autocomplete']) {
+      if ($args['autocomplete'] && $args['id']) {
         $form['purchased_entity'] += [
           '#autocomplete_route_name' => 'commerce_quick_purchase.sku_autocomplete',
           '#autocomplete_route_parameters' => ['id' => $args['id']],
