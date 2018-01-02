@@ -90,6 +90,9 @@ block.settings.commerce_quick_purchase_add_to_cart_block:*:
     template:
       type: text
       label: 'The inline template to use instead of the textfield'
+    external_template:
+      type: integer
+      label: 'Whether to use an external template instead of the inline one'
     library:
       type: string
       label: 'The Drupal library to use with the block'

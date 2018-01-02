@@ -178,6 +178,7 @@ HTML;
       'price_negate' => 0,
       'use_template' => 0,
       'template' => $template,
+      'external_template' => 0,
       'library' => 'commerce_quick_purchase/form',
     ];
   }
@@ -549,6 +550,7 @@ for a user on the field usage.'),
    * {@inheritdoc}
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
+    $default = $this->defaultConfiguration();
     $values = $form_state->getValues();
     $do_not_add_cart = $values['redirection'] == 'variation_page' ? $values['do_not_add_to_cart'] : 0;
 
@@ -560,13 +562,26 @@ for a user on the field usage.'),
     $this->configuration['show_price'] = (int) $values['show_price'];
     $this->configuration['button_text'] = $values['button_text'];
     $this->configuration['use_image_button'] = (int) $values['use_image_button'];
-    $this->configuration['image_button'] = $values['image_button'] ?: $this->defaultConfiguration()['image_button'];
+    $this->configuration['image_button'] = $values['image_button'] ?: $default['image_button'];
     $this->configuration['placeholder'] = $values['placeholder'];
     $this->configuration['description'] = $values['description'];
     $this->configuration['default_value'] = isset($values['default_value']) ? $values['default_value'] : '';
+    $this->configuration['library'] = empty($values['library']) ? $default['library'] : $values['library'];
     $this->configuration['use_template'] = empty($values['default_value']) ? 0 : (int) $values['use_template'];
-    $this->configuration['template'] = empty($values['template']) ? $this->defaultConfiguration()['template'] : $values['template'];
-    $this->configuration['library'] = empty($values['library']) ? $this->defaultConfiguration()['library'] : $values['library'];
+    $this->configuration['external_template'] = 0;
+    if (empty($values['template'])) {
+      $this->configuration['use_template'] = 0;
+      $this->configuration['template'] = $default['template'];
+    }
+    else {
+      $this->configuration['template'] = $values['template'];
+      $new_value = preg_replace('/[^a-z0-9_]+/', '_', strtolower($values['template']));
+      $new_value = preg_replace('/_+/', '_', $new_value);
+      // Seems the template value is a valid Drupal template (#theme) name.
+      if ($new_value === $values['template']) {
+        $this->configuration['external_template'] = 1;
+      }
+    }
   }
 
   /**
@@ -586,6 +601,7 @@ for a user on the field usage.'),
       'default_value' => '',
       'use_template' => 0,
       'template' => '',
+      'external_template' => 0,
       'library' => $config['library'],
     ];
 
@@ -595,6 +611,7 @@ for a user on the field usage.'),
         if ($config['use_template']) {
           $args['use_template'] = $config['use_template'];
           $args['template'] = $config['template'];
+          $args['external_template'] = $config['external_template'];
           $args['variation'] = $variation;
         }
       }

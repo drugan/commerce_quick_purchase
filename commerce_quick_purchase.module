@@ -9,6 +9,17 @@ use Drupal\commerce_quick_purchase\QuickPurchaseBlockForm;
 use Drupal\commerce_quick_purchase\QuickPurchaseBlockAccessControlHandler;
 
 /**
+ * Implements hook_theme().
+ */
+function commerce_quick_purchase_theme() {
+  return [
+    'commerce_quick_purchase_template_example' => [
+      'render element' => 'element',
+    ],
+  ];
+}
+
+/**
  * Implements hook_entity_type_alter().
  */
 function commerce_quick_purchase_entity_type_alter(array &$entity_types) {

@@ -63,14 +63,24 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
 
     if ($args['use_template']) {
       $form['template'] = [
-        '#type' => 'inline_template',
-        '#template' => $args['template'],
         '#context' => [
           'variation' => $args['variation'],
         ],
         '#prefix' => "<div id=\"{$args['id']}-template\" class=\"commerce-quick-purchase__template\">",
         '#suffix' => '</div>',
       ];
+      if ($args['external_template']) {
+        $form['template'] += [
+          '#type' => 'item',
+          '#theme' => [$args['template']],
+        ];
+      }
+      else {
+        $form['template'] += [
+          '#type' => 'inline_template',
+          '#template' => $args['template'],
+        ];
+      }
       $form['purchased_entity'] = [
         '#type' => 'hidden',
         '#value' => $args['default_value'],

@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ *
+ * Template example.
+ *
+ * @ingroup themeable
+ */
+#}
+{% set variation = element['#context'].variation %}
+
+<!-- Another way to attach library to the template -->
+{{ attach_library('commerce_quick_purchase/template-example-1') }}
+
+<div class="template-example-1__title">{{ variation.getProduct.getTitle }}</div>
+<div class="template-example-1__body">{{ variation.getProduct.get('body').getValue[0]['value']|raw }}</div>
+<div class="template-example-1__price-prefix">Starting at only</div>
+<div class="template-example-1__price">{{ variation.getPrice|commerce_price_format }}</div>
