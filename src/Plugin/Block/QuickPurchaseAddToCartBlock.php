@@ -338,7 +338,7 @@ for a user on the field usage.'),
         '#type' => 'textarea',
         '#title' => $this->t('Inline template'),
         '#default_value' => $config['template'],
-        '#description' => $this->t('Only users having "Full HTML" text format permission can access this feature (you). Any valid HTML and/or Twig syntax can be used for a template creating. The default variation object is passed to the template and might be used as it shown in the template example. Note that created template is valid only for the current block instance.'),
+        '#description' => $this->t('Only users having "Full HTML" text format permission can access this feature (you). Any valid HTML and/or Twig syntax can be used for template creating. The default variation object is passed to the template and might be used as it shown in the template example. Note that created template is valid only for the current block instance. Still, you may create a reusable template in your custom module and insert the template name instead of HTML/Twig code in the field. Read more: <a href=":href" target="_blank">admin/help/commerce_quick_purchase#external-template</a>', [':href' => '/admin/help/commerce_quick_purchase#external-template']),
         '#states' => [
           'visible' => [
             ':input[name="settings[use_template]"]' => ['checked' => TRUE],

@@ -30,11 +30,15 @@ block visibility conditions.
 - [admin/help/commerce_quick_purchase#description](#description "Description")
 - [admin/help/commerce_quick_purchase#default-value](#default-value "Default value")
 - [admin/help/commerce_quick_purchase#inline-template](#inline-template "Inline template")
+- [admin/help/commerce_quick_purchase#external-template](#external-template "External template")
 - [admin/help/commerce_quick_purchase#library](#library "library")
 - [admin/help/commerce_quick_purchase#variations-availability](#variations-availability "Variations availability")
 - [admin/help/commerce_quick_purchase#block-visibility](#block-visibility "Block visibility")
 - [admin/help/commerce_quick_purchase#pane-block-example](#pane-block-example "Pane block example")
 - [admin/help/commerce_quick_purchase#image-button-example](#image-button-example "Image button example")
+- [admin/help/commerce_quick_purchase#module-author](#module-author "Module author")
+- [Commerce Quick Purchase on drupal.org ↗](https://www.drupal.org/project/commerce_quick_purchase)
+- [Commerce Quick Purchase on github.com ↗](https://github.com/drugan/commerce_quick_purchase)
 
 ## Set up
 
@@ -139,6 +143,34 @@ template is provided to give an example of the feature usage.
 
 ![Default and Template](images/default-and-template.png "Default and Template")
 
+### External template
+
+Instead of inline template you may create a reusable template in your custom
+module and insert the template name instead of HTML/Twig code in the field.
+
+![External template](images/external-template.png "External template")
+
+##### How to
+
+First, implement `hook_theme()` and declare a template
+in `your_module.module` file. Like it is done in the `commerce_quick_purchase`
+module:
+
+@PHPFILE: commerce_quick_purchase.module LINE:16 PADD:5 :PHPFILE@
+
+Second, define the template, like it is done in the
+`templates/commerce-quick-purchase-template-example.html.twig` file:
+
+@PHPFILE: modules/contrib/commerce_quick_purchase/templates/commerce-quick-purchase-template-example.html.twig :PHPFILE@
+
+Note that `.html.twig` file's name should be the same as
+in `your_module.module`'s `hook_theme()` but only separated by dashes instead of
+underscores. Also, note the library attached right from the template which is
+the alternative way to attaching it through the *Library* field
+below. [Read more ↗](https://www.drupal.org/node/2640110)
+
+
+
 ### Library
 
 You may define your
@@ -162,7 +194,7 @@ So, be sensible when using this feature. Though you don't need to figure out the
 availability manually. The module is smart enough and will emit a warning on the
 attempt to save a block having no one variation available. Also, note that if
 variations will become unavailable later (unpublished, set inactive, deleted,
-etc.) then the textfield and `Add to cart` button on the block become
+etc.) then the textfield and `Add to cart` button on the block will be
 automatically disabled.
 
 ### Block visibility
