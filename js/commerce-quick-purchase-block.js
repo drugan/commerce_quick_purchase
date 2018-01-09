@@ -26,22 +26,22 @@
 
       $('details[data-drupal-selector="edit-visibility-commerce-quick-purchase-and-or"]')
         .drupalSetSummary(function (context) {
-        $or = context.querySelector('[data-drupal-selector="edit-visibility-commerce-quick-purchase-and-or-all-or"]').checked;
-        return $or ? 'OR' : 'AND';
-      });
+          $or = context.querySelector('[data-drupal-selector="edit-visibility-commerce-quick-purchase-and-or-all-or"]').checked;
+          return $or ? 'OR' : 'AND';
+        });
 
       $('[data-drupal-selector="edit-settings-commerce-quick-purchase-price"]')
         .drupalSetSummary(function (context) {
-        $val = $(context).find('[data-drupal-selector="edit-settings-commerce-quick-purchase-price-price"]').val();
-        if ($val > 0) {
-          $negate = context.querySelector('[data-drupal-selector="edit-settings-commerce-quick-purchase-price-negate"]').checked;
-          $operator = $negate ? '>= ' : '<= ';
+          $val = $(context).find('[data-drupal-selector="edit-settings-commerce-quick-purchase-price-price"]').val();
+          if ($val > 0) {
+            $negate = context.querySelector('[data-drupal-selector="edit-settings-commerce-quick-purchase-price-negate"]').checked;
+            $operator = $negate ? '>= ' : '<= ';
 
-          return $operator + $val;
-        }
+            return $operator + $val;
+          }
 
-        return Drupal.t('Not restricted');
-      });
+          return Drupal.t('Not restricted');
+        });
     }
   };
 })(jQuery, window, Drupal);
