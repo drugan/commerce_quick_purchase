@@ -57,6 +57,21 @@ class QuickPurchaseBlockForm extends BlockForm {
       $form['language']['negate']['#type'] = 'value';
       $form['language']['negate']['#value'] = $form['language']['negate']['#default_value'];
     }
+    // Remove product context provided by DC as it has no definition and may
+    // confuse displaying under product type checkboxes a select element with
+    // just one option "Product from URL".
+    // @see https://www.drupal.org/node/2915167
+    // @todo remove when they'll create @CommerceCondition plugin for the
+    // context.
+    if (isset($form['commerce_quick_purchase_product_type'])) {
+      $form['commerce_quick_purchase_product_type']['context_mapping'] = [
+        '#tree' => TRUE,
+        'commerce_product' => [
+          '#type' => 'value',
+          '#value' => '@commerce_quick_purchase.commerce_product_route_context:commerce_product',
+        ],
+      ];
+    }
 
     return $form;
   }
