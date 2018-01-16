@@ -23,6 +23,6 @@
     "source": "https://github.com/drugan/commerce_quick_purchase"
   },
   "require": {
-        "drupal/readmehelp": "dev-1.x"
+        "drupal/readmehelp": "^1.0"
   }
 }
