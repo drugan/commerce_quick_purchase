@@ -2,19 +2,24 @@ Commerce Quick Purchase
 =======================
 
 Provides a block with a textfield and a button allowing quickly add any product
-to cart by typing a variation title and/or SKU in the textfield and then
+to cart by typing a variation title and / or SKU in the textfield and then
 pressing `Add to cart` button.
+
+> Tip: you can see this file in your browser by clicking
+the [admin/help#](#0 "? Help") link at the right of the *Admin toolbar* and then
+the [admin/help/commerce_quick_purchase#](#0 "Commerce Quick Purchase") link in the list.
 
 ![Quick purchase block](images/quickly-add-to-cart.png "Quick purchase block")
 
 Note that variation added to a cart will be combined with the same variations
-if the *Combine order items* setting on a product type of the variation implies
-it. Also, the variation will be added with the default quantity existing on the
+if the *Combine order items* setting on a product type of the variation defines
+this. Also, the variation will be added with the default quantity existing on the
 order item type used by the variation. Currently, the default quantity is equal
-to 1 and cannot be set from the UI but you may
-use [this ↗](https://www.drupal.org/node/2794909) workaround forcing a user to
-add a particular quantity to the cart and disallowing changes on the value.
-Also note if the variation is out of stock it will not be added to cart.
+to 1 and cannot be set from the UI but you may use
+the [Commerce Extended Quantity ↗](https://www.drupal.org/project/commerce_xquantity)
+module forcing a user to add a particular quantity to the cart and disallowing
+changes on the value. Also note if the variation is out of stock it will not be
+added to the cart.
 
 Any number of blocks could be placed under different variation availability and
 block visibility conditions.
@@ -42,15 +47,15 @@ block visibility conditions.
 
 ## Set up
 
-Go to [admin/structure/block#](#0 "admin/structure/block") page, choose
-desirable region and press `Place block` button. In the appeared pop-up
-window find the *Quickly add any product to cart* block and
-press `Place block` button at the right. When saving the block the first
-time it is recommended to set up a custom machine name because it is the only
-chance when you can do this. You may need it if you are going to create a group
-of related blocks which should use a common *CSS* and/
-or *JS* [admin/help/commerce_quick_purchase#library](#library "library"). Call
-it for example *my_pizza_pane_block_1*, the next in the same category will
+Go to the [admin/structure/block](#0 "admin/structure/block") page, choose a
+desirable region and press the `Place block` button. In the appeared pop-up
+window find the *Quickly add any product to cart* block and press `Place block`
+button at the right. When saving the block in the first time it is recommended
+to set up a custom machine name for the block because it is the only chance when
+you can do this. You may need it to create a group of related blocks which
+should use a
+common *CSS* and / or *JS* [admin/help/commerce_quick_purchase#library](#library "library").
+Call it for example *my_pizza_pane_block_1*, the next in the same category will
 be *my_pizza_pane_block_2*, etc..
 
 ![Machine name](images/machine-name.png "Machine name")
@@ -69,23 +74,23 @@ After pressing `Add to cart` button a user can be redirected to:
 - Redirection on the selected product variation page
 
 When *the variation page* is chosen then there is an additional option to not
-add variation to cart. Use it if you want a user to decide on the action or just
-for searching required variations. In the case of the *cart page* it will be
-scrolled down to the cart where the current variation was added. Pretty useful
-on the site which has multiple stores.
+add variation to a cart. Use it if you want a customer to decide on the action
+or just for searching required variations. When arrived on the *cart page* it
+will be scrolled down to the actual cart into which the current variation was
+added. Quite useful on a site with multiple stores.
 
 ![Do not add to cart](images/do-not-add-to-cart.png "Do not add to cart")
 
 ### Autocompletion
 
 There might be cases when you don't need autocompletion feature and instead
-want to force users enter a before known for them variation title and/or SKU
+want a customer to enter a before known for them variation title and / or SKU
 value in the textfield.
 
 ### Autocomplete threshold
 
-The maximum is 100 suggestions. Can be used to reduce a lag between
-typing and actual appearing of suggestions below the field. Note that
+The maximum is one hundred suggestions. Can be used to reduce a lag between
+typing a text and actual appearing of suggestions below the field. Note that
 suggestions are divided equally between variation title and SKU. So, ideally
 when typing the letter **a** your user will get 50 suggestions of variations
 having **a** in the title and 50 suggestions having **a** in the SKU.
@@ -99,9 +104,9 @@ appearing of suggestions a little faster.
 
 Set up any text which is appropriate for your needs instead of
 the `Add to cart` default text. For example, you may set the text
-to `Go to` value when [admin/help/commerce_quick_purchase#redirection](#redirection "redirecting") to
-a variation page and not adding it to a cart. Note that this text also will be
-used for *title* and *alt* attributes if you opt in to use an image as
+to `Go to` value when [admin/help/commerce_quick_purchase#redirection](#redirection "redirecting")
+to a variation page and not adding it to a cart. Note that this text also will
+be used for a *title* and *alt* attributes if you opt in to use an image as
 the `Add to cart` button.
 
 ### Image button
@@ -112,9 +117,9 @@ absolute or relative URL of the image. Examples:
 - https://example.com/path/to/my-folder/my-image.png
 - path/to/my-folder/my-image.png
 
-For default the
-cart [image ↗](https://github.com/drupalcommerce/commerce/tree/8.x-2.x/icons/000000) from
-the base *Drupal Commerce* module is used.
+For a default the
+cart [image ↗](https://github.com/drupalcommerce/commerce/tree/8.x-2.x/icons/000000)
+from the base *Drupal Commerce* module is used.
 
 ### Placeholder
 
@@ -124,29 +129,30 @@ is usually a sample value or a brief description of the expected format.
 ### Description
 
 The text that will be shown below the field to give a more verbose instructions
-for a user on the field usage.
+for a customer on the field usage.
 
 ### Default value
 
-Product variaton title and/or SKU to display in the textfield by default. When
+Product variaton title and / or SKU to display in the textfield by default. When
 using autocompletion it is recommended to
-save *Variations availability* settings first (if you need non-default
-availability set up). It's because exactly these settings are used to filter out
+save *Variations availability* settings first (if you need a non-default
+availability set up). It's because exactly those settings are used to filter out
 available variations on the field. Also note that inline template feature below
 can only be used if this field has a valid value.
 
 ### Inline template
 
-If the default value has a valid value then inline template can be used to
-present default variation for a user instead of the textfiled. The default
+If the *Default value* has a valid value then an inline template can be used to
+present default variation for a user instead of the textfield. The default
 template is provided to give an example of the feature usage.
 
 ![Default and Template](images/default-and-template.png "Default and Template")
 
 ### External template
 
-Instead of inline template you may create a reusable template in your custom
-module and insert the template name instead of HTML/Twig code in the field.
+Instead of the *Inline template* you may create a reusable template in your
+custom module and insert the template name instead of *HTML* / *Twig* code in
+the field.
 
 ![External template](images/external-template.png "External template")
 
@@ -176,23 +182,23 @@ below. [Read more ↗](https://www.drupal.org/node/2640110)
 You may define your
 own [Drupal library ↗](https://www.drupal.org/node/2274843) and
 use it to style an individual block or a group of blocks. The example on how to
-create group of blocks might be
-found [admin/help/commerce_quick_purchase#set-up](#set-up "above").
+create a group of blocks might be
+found from the [admin/help/commerce_quick_purchase#set-up](#set-up "above").
 
 ### Variations availability
 
 Restricts variations which could be accessed from the block. Note when negating
-availability condition only *Published/Active* and *Price* conditions have sense
-to negate all of them. Just because theoretically there might exist a variation
-which is inactive and member of unpublished product at the same time. But if you
-have three stores in total and they are all checked and negated, that means no
-one variation will be available.
+availability condition only *Published / Active* and *Price* conditions have
+sense to negate all of them. Just because theoretically there might exist a
+variation which is inactive and member of unpublished product at the same time.
+But if you have three stores in total and they are all checked and negated then
+no variations will be available.
 
 ![Wrong setup](images/wrong-setup.png "Wrong setup")
 
 So, be sensible when using this feature. Though you don't need to figure out the
 availability manually. The module is smart enough and will emit a warning on the
-attempt to save a block having no one variation available. Also, note that if
+attempt to save a block having no one available variation. Also, note that if
 variations will become unavailable later (unpublished, set inactive, deleted,
 etc.) then the textfield and `Add to cart` button on the block will be
 automatically disabled.
@@ -208,10 +214,10 @@ product entities can't co-exist in the same route context. For this case
 the *OR* conjunction operator might be used. So, if at least one of the
 conditions options will be found in the route and pass then the block will
 become visible. With *Negate the condition* option works the same rule as for
-the [admin/help/commerce_quick_purchase#variations-availability](#variations-availability "Variations availability") section:
-if you have three stores in total and they are all checked and negated, that
-means your block will disappear everywhere in case if conjunction operator
-is *AND* or, if conjunction operator is *OR* and no other conditions exist.
+the [admin/help/commerce_quick_purchase#variations-availability](#variations-availability "Variations availability")
+section: if you have three stores in total and they are all checked and negated,
+then your block will disappear everywhere in case of the *AND* conjunction
+operator or, if conjunction operator is *OR* and no other conditions exist.
 
 ![OR conjunction example](images/or-conjunction.png "OR conjunction example")
 
@@ -272,7 +278,7 @@ of the blocks respectively.
 
 ###### Module author:
 ```
-  Vladimir Proshin (drugan)
+  Vlad Proshin (drugan)
   [proshins@gmail.com](proshins@gmail.com)
   [https://drupal.org/u/drugan](https://drupal.org/u/drugan)
 ```
