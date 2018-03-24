@@ -39,6 +39,7 @@ block visibility conditions.
 - [admin/help/commerce_quick_purchase#library](#library "library")
 - [admin/help/commerce_quick_purchase#variations-availability](#variations-availability "Variations availability")
 - [admin/help/commerce_quick_purchase#block-visibility](#block-visibility "Block visibility")
+- [admin/help/commerce_quick_purchase#product-field-block-visibility-condition](#product-field-block-visibility-condition "Product field block visibility condition")
 - [admin/help/commerce_quick_purchase#pane-block-example](#pane-block-example "Pane block example")
 - [admin/help/commerce_quick_purchase#image-button-example](#image-button-example "Image button example")
 - [admin/help/commerce_quick_purchase#module-author](#module-author "Module author")
@@ -220,6 +221,18 @@ then your block will disappear everywhere in case of the *AND* conjunction
 operator or, if conjunction operator is *OR* and no other conditions exist.
 
 ![OR conjunction example](images/or-conjunction.png "OR conjunction example")
+
+### Product field block visibility condition
+
+An experimental feature.
+Requires [Field Condition ↗](https://www.drupal.org/sandbox/droath/2841077)
+module. Also, the following patches needs to be applied in case if they not
+commited yet:
+
+- https://www.drupal.org/project/2841077/issues/2955776
+- https://www.drupal.org/project/2841077/issues/2955778
+- https://www.drupal.org/project/2841077/issues/2955781
+- https://www.drupal.org/project/2841077/issues/2955782
 
 ### Pane block example
 
