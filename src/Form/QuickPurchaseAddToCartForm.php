@@ -161,7 +161,9 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
     $input = $form_state->getUserInput();
 
     if ($str = trim($input['purchased_entity'])) {
-      $block = $this->entityManager->getStorage('block')->load($input['block_id'])->getPlugin();
+      $block = $this->entityManager->getStorage('block')
+        ->load($input['block_id'])
+        ->getPlugin();
       $config = $block->getConfiguration();
       $form_state->set('do_not_add_to_cart', $config['do_not_add_to_cart']);
       $form_state->set('redirection', $config['redirection']);

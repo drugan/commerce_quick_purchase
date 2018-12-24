@@ -11,7 +11,7 @@ services:
 
   commerce_quick_purchase.order_item_matcher:
     class: Drupal\commerce_quick_purchase\QuickPurchaseOrderItemMatcher
-    arguments: ['@event_dispatcher']
+    arguments: ['@entity_type.manager', '@event_dispatcher']
 
 # Use this if the same in CommerceQuickPurchaseServiceProvider does not work.
 #  commerce_product.variation_field_renderer:
