@@ -157,7 +157,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $variation = NULL;
+    $purchased_entity = NULL;
     $input = $form_state->getUserInput();
 
     if ($str = trim($input['purchased_entity'])) {
@@ -167,21 +167,21 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
       $config = $block->getConfiguration();
       $form_state->set('do_not_add_to_cart', $config['do_not_add_to_cart']);
       $form_state->set('redirection', $config['redirection']);
-      $variation = $block->getVariationBySkuOrTitle($str);
+      $purchased_entity = $block->getVariationBySkuOrTitle($str);
 
-      if ($variation instanceof PurchasableEntityInterface) {
+      if ($purchased_entity instanceof PurchasableEntityInterface) {
         $values = (array) $form_state->getValues();
-        $values['selected_variation'] = $variation;
+        $values['selected_variation'] = $purchased_entity;
         $values['purchased_entity'] = [
           [
-            'variation' => $variation->id(),
-            'attributes' => $variation->getAttributeValueIds(),
+            'variation' => $purchased_entity->id(),
+            'attributes' => $purchased_entity->getAttributeValueIds(),
           ],
         ];
         $form_state->setValues($values);
 
         if (!$config['do_not_add_to_cart']) {
-          $order_item = $this->cartManager->createOrderItem($variation);
+          $order_item = $this->cartManager->createOrderItem($purchased_entity);
           $form_display = entity_get_form_display($order_item->getEntityTypeId(), $order_item->bundle(), 'add_to_cart');
           if (!$quantity = $form_display->getComponent('quantity')) {
             $form_display_default = entity_get_form_display($order_item->getEntityTypeId(), $order_item->bundle(), 'default');
@@ -194,22 +194,25 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
           }
           // Now recreate order item using the default quantity.
           if ($default_quantity != 1) {
-            $order_item = $this->cartManager->createOrderItem($variation, $default_quantity);
+            $order_item = $this->cartManager->createOrderItem($purchased_entity, $default_quantity);
           }
 
           $availability = $this->cartManager->availabilityManager;
-          $context = new Context($this->currentUser, $this->selectStore($variation));
-          if (!$availability->check($variation, $default_quantity, $context)) {
+          $context = new Context($this->currentUser, $this->selectStore($purchased_entity), time(), ['xquantity' => 'add_to_cart']);
+          $available = $availability->check($purchased_entity, $default_quantity, $context);
+          if (!$available) {
             $form['purchased_entity']['#value'] = $form['purchased_entity']['#default_value'] ?: '';
-            $form_state->setErrorByName('purchased_entity', t('Unfortunately, the %variation is out of stock right at the moment.', [
-              '%variation' => $variation->label(),
-            ]));
+            $msg = $this->t('Unfortunately, the quantity %quantity of the %label is not available right at the moment.', [
+              '%quantity' => $default_quantity,
+              '%label' => $purchased_entity ? $purchased_entity->label() : $this->t('???'),
+            ]);
+            \Drupal::moduleHandler()->alter("xquantity_add_to_cart_not_available_msg", $msg, $default_quantity, $purchased_entity);
+            $form_state->setErrorByName('purchased_entity', $msg);
           }
-
           $this->setEntity($order_item);
           $form_state->getFormObject()->setEntity($order_item);
 
-          $product = $variation->getProduct();
+          $product = $purchased_entity->getProduct();
           $form_state->set('product', $product);
 
           $display = entity_get_display($product->getEntityTypeId(), $product->bundle(), 'default');
@@ -223,7 +226,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
       }
     }
 
-    if (!$variation) {
+    if (!$purchased_entity) {
       $form['purchased_entity']['#value'] = $form['purchased_entity']['#default_value'] ?: '';
       $form_state->setErrorByName('purchased_entity', $this->t('Product which could be identified by the %str is not available.', [
         '%str' => $str ?: '???',
