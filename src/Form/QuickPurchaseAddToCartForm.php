@@ -197,9 +197,16 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
             $order_item = $this->cartManager->createOrderItem($purchased_entity, $default_quantity);
           }
 
-          $availability = $this->cartManager->availabilityManager;
-          $context = new Context($this->currentUser, $this->selectStore($purchased_entity), time(), ['xquantity' => 'add_to_cart']);
-          $available = $availability->check($purchased_entity, $default_quantity, $context);
+          if ($available = $purchased_entity) {
+            $availability = $this->cartManager->availabilityManager;
+            $context = new Context($this->currentUser, $this->selectStore($purchased_entity), time(), [
+              'xquantity' => 'add_to_cart',
+            ]);
+            $available = $availability->check($purchased_entity, $default_quantity, $context);
+            if (!$available && method_exists($order_item, 'rotateStock') && $order_item->rotateStock($purchased_entity, $default_quantity, $context)) {
+              $available = $availability->check($purchased_entity, $default_quantity, $context);
+            }
+          }
           if (!$available) {
             $form['purchased_entity']['#value'] = $form['purchased_entity']['#default_value'] ?: '';
             $msg = $this->t('Unfortunately, the quantity %quantity of the %label is not available right at the moment.', [
