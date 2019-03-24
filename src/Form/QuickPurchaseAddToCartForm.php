@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\commerce\PurchasableEntityInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\commerce\Context;
+use Drupal\commerce_order\Entity\OrderItem;
 
 /**
  * Overrides the commerce order item add to cart form.
@@ -45,6 +46,17 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
       $this->formId = $this->getBaseFormId() . '_block_form';
     }
     return $this->formId;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEntity() {
+    if (!($entity = parent::getEntity())) {
+      return new OrderItem([], 'commerce_product');
+    }
+
+    return $entity;
   }
 
   /**
