@@ -5,11 +5,16 @@ The form variation textfield and button
   max-width: none;
   width: 100%;
 }
-.commerce-quick-purchase__textfield:focus {
+.commerce-quick-purchase__textfield:focus,
+.commerce-quick-purchase__number.form-control:focus {
   width: auto;
   z-index: -999;
 }
 
 .commerce-quick-purchase__button {
   min-width: 50px;
+}
+
+.commerce-quick-purchase__number.form-control {
+  width: 14rem;
 }

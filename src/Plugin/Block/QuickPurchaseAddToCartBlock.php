@@ -162,6 +162,7 @@ HTML;
       'autocomplete' => 1,
       'autocomplete_threshold' => 10,
       'default_value' => '',
+      'use_quantity' => 0,
       'show_price' => 1,
       'stores' => [],
       'stores_negate' => 0,
@@ -244,6 +245,17 @@ HTML;
         'visible' => [
           ':input[name="settings[autocomplete]"]' => ['value' => '1'],
         ],
+      ],
+    ];
+
+    $form['use_quantity'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('The quantity field'),
+      '#field_prefix' => $this->t('Whether to enable the quantity field.'),
+      '#default_value' => $config['use_quantity'],
+      '#options' => [
+        $this->t('Disabled'),
+        $this->t('Enabled'),
       ],
     ];
 
@@ -559,6 +571,7 @@ for a user on the field usage.'),
     $this->configuration['do_not_add_to_cart'] = (int) $do_not_add_cart;
     $this->configuration['autocomplete'] = (int) $values['autocomplete'];
     $this->configuration['autocomplete_threshold'] = (int) $values['autocomplete_threshold'];
+    $this->configuration['use_quantity'] = (int) $values['use_quantity'];
     $this->configuration['show_price'] = (int) $values['show_price'];
     $this->configuration['button_text'] = $values['button_text'];
     $this->configuration['use_image_button'] = (int) $values['use_image_button'];
@@ -599,6 +612,7 @@ for a user on the field usage.'),
       'use_image_button' => $config['use_image_button'],
       'image_button' => $config['use_image_button'] ? $config['image_button'] : '',
       'default_value' => '',
+      'use_quantity' => $config['use_quantity'],
       'use_template' => 0,
       'template' => '',
       'external_template' => 0,

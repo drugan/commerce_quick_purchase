@@ -5,6 +5,9 @@ block.settings.commerce_quick_purchase_add_to_cart_block:*:
     block_id:
       type: string
       label: 'Block instance ID'
+    use_quantiy:
+      type: integer
+      label: 'Whether to display a quantity field'
     redirection:
       type: string
       label: 'The type of page to redirect'

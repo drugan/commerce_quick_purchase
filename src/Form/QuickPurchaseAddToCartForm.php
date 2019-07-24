@@ -114,6 +114,19 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
         '#prefix' => "<div id=\"{$args['id']}-field\" class=\"commerce-quick-purchase__field\">",
         '#suffix' => '</div>',
       ];
+      if ($args['use_quantity']) {
+        $form['quantity'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('Quantity'),
+          '#id' => 'edit-quantity-' . $args['id'],
+          '#maxlength' => 14,
+          '#placeholder' => 'Enter a number or leave empty for default quantity',
+          '#disabled' => !$args['has_variations'],
+          '#attributes' => ['class' => ['commerce-quick-purchase__number']],
+          '#prefix' => "<div id=\"{$args['id']}-field\" class=\"commerce-quick-purchase__field\">",
+          '#suffix' => '</div>',
+        ];
+      }
       if ($args['autocomplete'] && $args['id']) {
         $form['purchased_entity'] += [
           '#autocomplete_route_name' => 'commerce_quick_purchase.sku_autocomplete',
@@ -191,27 +204,59 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
             'attributes' => $purchased_entity->getAttributeValueIds(),
           ],
         ];
-        $form_state->setValues($values);
 
         if (!$config['do_not_add_to_cart']) {
+          if (!empty($values['quantity']) && !is_numeric($values['quantity'])) {
+            $form_state->setErrorByName('quantity', $this->t('The entered quantity is not a number'));
+          }
+
           $order_item = $this->cartManager->createOrderItem($purchased_entity);
-          $form_display = \Drupal::entityTypeManager()
+          $default_quantity = $order_item->getQuantity();
+          $entity_type_manager = \Drupal::entityTypeManager();
+          $form_display = $entity_type_manager
             ->getStorage('entity_form_display')
             ->load($order_item->getEntityTypeId() . '.' . $order_item->bundle() . '.' . 'add_to_cart');
           if (!$quantity = $form_display->getComponent('quantity')) {
-            $form_display_default = \Drupal::entityTypeManager()
+            $form_display_default = $entity_type_manager
               ->getStorage('entity_form_display')
               ->load($order_item->getEntityTypeId() . '.' . $order_item->bundle() . '.' . 'default');
             $quantity = $form_display_default->getComponent('quantity');
           }
-
-          $default_quantity = 1;
-          if (isset($quantity['settings']['default_value']) && $quantity['settings']['default_value']) {
-            $default_quantity = $quantity['settings']['default_value'];
+          if (isset($quantity['settings'])) {
+            $settings = $quantity['settings'];
+            if (!empty($values['quantity'])) {
+              $scale = 0;
+              $decimal = $settings['step'];
+              while ($decimal - round($decimal)) {
+                $decimal *= 10;
+                $decimal = (string) $decimal;
+                $scale++;
+              }
+              $qty = (int) bcdiv($values['quantity'], $settings['step'], $scale);
+              $qty = bcmul($settings['step'], $qty, $scale);
+              if ((bccomp($qty, $settings['step'], $scale) === -1)) {
+                $form_state->setErrorByName('quantity', $this->t('The entered quantity is less than minimum %min', [
+                  '%min' => $settings['step'],
+                ]));
+              }
+              if (!empty($settings['min']) && (bccomp($qty, $settings['min'], $scale) === -1)) {
+                $form_state->setErrorByName('quantity', $this->t('The entered quantity is less than minimum %min', [
+                  '%min' => $settings['min'],
+                ]));
+              }
+              if (!empty($settings['max']) && (bccomp($qty, $settings['max'], $scale) === 1)) {
+                $form_state->setErrorByName('quantity', $this->t('The entered quantity is greater than maximum %max', [
+                  '%max' => $settings['max'],
+                ]));
+              }
+              $default_quantity = $values['quantity'] = $qty;
+            }
+            elseif (!empty($settings['default_value'])) {
+              $default_quantity = $values['quantity'] = $settings['default_value'];
+            }
           }
-          // Now recreate order item using the default quantity.
-          if ($default_quantity != 1) {
-            $order_item = $this->cartManager->createOrderItem($purchased_entity, $default_quantity);
+          if (empty($values['quantity'])) {
+            $values['quantity'] = $default_quantity;
           }
 
           if ($available = $purchased_entity) {
@@ -238,11 +283,13 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
 
           $product = $purchased_entity->getProduct();
           $form_state->set('product', $product);
-
-          $display = entity_get_display($product->getEntityTypeId(), $product->bundle(), 'default');
-          $combine = $display->getComponent('variations')['settings']['combine'];
+          $entity_display_default = $entity_type_manager
+            ->getStorage('entity_view_display')
+            ->load($product->getEntityTypeId() . '.' . $product->bundle() . '.' . 'default');
+          $combine = $entity_display_default->getComponent('variations')['settings']['combine'];
 
           $form_state->set('settings', ['combine' => $combine]);
+          $form_state->setValues($values);
           $this->setFormDisplay($form_display, $form_state);
 
           parent::validateForm($form, $form_state);
