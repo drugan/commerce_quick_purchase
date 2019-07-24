@@ -102,6 +102,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
     else {
       $form['purchased_entity'] = [
         '#type' => 'textfield',
+        '#required' => TRUE,
         '#id' => 'edit-purchased-entity-' . $args['id'],
         '#default_value' => $args['default_value'],
         '#size' => 256,
