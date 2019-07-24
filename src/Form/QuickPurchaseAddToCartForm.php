@@ -194,9 +194,13 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
 
         if (!$config['do_not_add_to_cart']) {
           $order_item = $this->cartManager->createOrderItem($purchased_entity);
-          $form_display = entity_get_form_display($order_item->getEntityTypeId(), $order_item->bundle(), 'add_to_cart');
+          $form_display = \Drupal::entityTypeManager()
+            ->getStorage('entity_form_display')
+            ->load($order_item->getEntityTypeId() . '.' . $order_item->bundle() . '.' . 'add_to_cart');
           if (!$quantity = $form_display->getComponent('quantity')) {
-            $form_display_default = entity_get_form_display($order_item->getEntityTypeId(), $order_item->bundle(), 'default');
+            $form_display_default = \Drupal::entityTypeManager()
+              ->getStorage('entity_form_display')
+              ->load($order_item->getEntityTypeId() . '.' . $order_item->bundle() . '.' . 'default');
             $quantity = $form_display_default->getComponent('quantity');
           }
 
