@@ -120,7 +120,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
           '#title' => $this->t('Quantity'),
           '#id' => 'edit-quantity-' . $args['id'],
           '#maxlength' => 14,
-          '#placeholder' => 'Enter a number or leave empty for default quantity',
+          '#placeholder' => $this->t('Enter a number or leave empty for default quantity'),
           '#disabled' => !$args['has_variations'],
           '#attributes' => ['class' => ['commerce-quick-purchase__number']],
           '#prefix' => "<div id=\"{$args['id']}-field\" class=\"commerce-quick-purchase__field\">",
@@ -206,8 +206,11 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
         ];
 
         if (!$config['do_not_add_to_cart']) {
-          if (!empty($values['quantity']) && !is_numeric($values['quantity'])) {
-            $form_state->setErrorByName('quantity', $this->t('The entered quantity is not a number'));
+          if (!empty($values['quantity'])) {
+            $values['quantity'] = trim($values['quantity']);
+            if (!is_numeric($values['quantity'])) {
+              $form_state->setErrorByName('quantity', $this->t('The entered quantity is not a number'));
+            }
           }
 
           $order_item = $this->cartManager->createOrderItem($purchased_entity);
@@ -224,7 +227,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
           }
           if (isset($quantity['settings'])) {
             $settings = $quantity['settings'];
-            if (!empty($values['quantity'])) {
+            if (isset($values['quantity'])) {
               $scale = 0;
               $decimal = $settings['step'];
               while ($decimal - round($decimal)) {
@@ -235,8 +238,8 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
               $qty = (int) bcdiv($values['quantity'], $settings['step'], $scale);
               $qty = bcmul($settings['step'], $qty, $scale);
               if ((bccomp($qty, $settings['step'], $scale) === -1)) {
-                $form_state->setErrorByName('quantity', $this->t('The entered quantity is less than minimum %min', [
-                  '%min' => $settings['step'],
+                $form_state->setErrorByName('quantity', $this->t('The entered quantity is less than step %step', [
+                  '%step' => $settings['step'],
                 ]));
               }
               if (!empty($settings['min']) && (bccomp($qty, $settings['min'], $scale) === -1)) {
