@@ -17,23 +17,6 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity.manager'),
-      $container->get('entity_type.bundle.info'),
-      $container->get('datetime.time'),
-      $container->get('commerce_quick_purchase.cart_manager'),
-      $container->get('commerce_cart.cart_provider'),
-      $container->get('commerce_order.chain_order_type_resolver'),
-      $container->get('commerce_store.current_store'),
-      $container->get('commerce_price.chain_price_resolver'),
-      $container->get('current_user')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getBaseFormId() {
     return 'commerce_quick_purchase_form';
   }
@@ -77,6 +60,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
       $form['template'] = [
         '#context' => [
           'variation' => $args['variation'],
+          'target_id' =>  $args['variation'],
         ],
         '#prefix' => "<div id=\"{$args['id']}-template\" class=\"commerce-quick-purchase__template\">",
         '#suffix' => '</div>',
@@ -201,6 +185,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
         $values['purchased_entity'] = [
           [
             'variation' => $purchased_entity->id(),
+            'target_id' => $purchased_entity->id(),
             'attributes' => $purchased_entity->getAttributeValueIds(),
           ],
         ];
@@ -261,9 +246,12 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
           if (empty($values['quantity'])) {
             $values['quantity'] = $default_quantity;
           }
+          $values['quantity'] = [
+           ['value' => $default_quantity],
+          ];
 
           if ($available = $purchased_entity) {
-            $availability = $this->cartManager->availabilityManager;
+            $availability = \Drupal::service('commerce.availability_manager');
             $context = new Context($this->currentUser, $this->selectStore($purchased_entity), time(), [
               'xquantity' => 'add_to_cart',
             ]);
@@ -281,9 +269,8 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
             \Drupal::moduleHandler()->alter("xquantity_add_to_cart_not_available_msg", $msg, $default_quantity, $purchased_entity);
             $form_state->setErrorByName('purchased_entity', $msg);
           }
-          $this->setEntity($order_item);
-          $form_state->getFormObject()->setEntity($order_item);
 
+          $form_state->getFormObject()->setEntity($order_item);
           $product = $purchased_entity->getProduct();
           $form_state->set('product', $product);
           $entity_display_default = $entity_type_manager
