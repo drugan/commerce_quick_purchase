@@ -2,8 +2,7 @@
 
 namespace Drupal\Tests\commerce_quick_purchase\FunctionalJavascript;
 
-use Drupal\Tests\commerce\FunctionalJavascript\JavascriptTestTrait;
-use Drupal\Tests\commerce_cart\Functional\CartBrowserTestBase;
+use Drupal\Tests\commerce_cart\FunctionalJavascript\CartWebDriverTestBase;
 
 /**
  * Tests the autocompletion on the form textfield.
@@ -13,9 +12,7 @@ use Drupal\Tests\commerce_cart\Functional\CartBrowserTestBase;
  *
  * @group commerce
  */
-class QuickPurchaseAddToCartBlockJavascriptTest extends CartBrowserTestBase {
-
-  use JavascriptTestTrait;
+class QuickPurchaseAddToCartBlockJavascriptTest extends CartWebDriverTestBase {
 
   /**
    * The variation1 to test against.

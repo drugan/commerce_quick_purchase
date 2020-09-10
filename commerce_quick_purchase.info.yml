@@ -2,6 +2,7 @@ name: Commerce Quick Purchase
 type: module
 description: Provides a block with a textfield and a button allowing quickly add any product to cart.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: Commerce (contrib)
 dependencies:
   - drupal:block
