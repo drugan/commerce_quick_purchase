@@ -171,7 +171,7 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
     $input = $form_state->getUserInput();
 
     if ($str = trim($input['purchased_entity'])) {
-      $block = $this->entityManager->getStorage('block')
+      $block = \Drupal::entityTypeManager()->getStorage('block')
         ->load($input['block_id'])
         ->getPlugin();
       $config = $block->getConfiguration();
