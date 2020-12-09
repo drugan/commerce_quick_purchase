@@ -250,14 +250,16 @@ class QuickPurchaseAddToCartForm extends AddToCartForm {
            ['value' => $default_quantity],
           ];
 
-          if ($available = $purchased_entity) {
+          if ($available = $purchased_entity && \Drupal::service('module_handler')->moduleExists('xquantity_stock')) {
             $availability = \Drupal::service('xquantity_stock.availability_checker');
-            $context = new Context($this->currentUser, $this->selectStore($purchased_entity), time(), [
-              'xquantity' => 'add_to_cart',
-            ]);
-            $available = !$availability->check($order_item, $context, $default_quantity)->isUnavailable();
-            if (!$available && method_exists($order_item, 'rotateStock') && $order_item->rotateStock($purchased_entity, $default_quantity, $context)) {
+            if ($availability->applies($order_item)) {
+              $context = new Context($this->currentUser, $this->selectStore($purchased_entity), time(), [
+                'xquantity' => 'add_to_cart',
+              ]);
               $available = !$availability->check($order_item, $context, $default_quantity)->isUnavailable();
+              if (!$available && method_exists($order_item, 'rotateStock') && $order_item->rotateStock($purchased_entity, $default_quantity, $context)) {
+                $available = !$availability->check($order_item, $context, $default_quantity)->isUnavailable();
+              }
             }
           }
           if (!$available) {
